@@ -14,7 +14,7 @@ DELAY_FROM_ENV = os.environ.get('APP_START_DELAY') or 0
 @app.route("/")
 def main():
     # return 'Hello'
-    return render_template('hello.html', name=socket.gethostname(), color='lightgreen')
+    return render_template('hello.html', name=socket.gethostname(), color='#16a085')
 
 if __name__ == "__main__":
 
