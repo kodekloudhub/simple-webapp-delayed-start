@@ -16,6 +16,11 @@ def main():
     # return 'Hello'
     return render_template('hello.html', name=socket.gethostname(), color='#16a085')
 
+
+@app.route("/hostname")
+def hostname():
+    return socket.gethostname()
+
 if __name__ == "__main__":
 
     if DELAY_FROM_ENV:
