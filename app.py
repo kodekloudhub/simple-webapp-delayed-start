@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     if DELAY_FROM_ENV:
         print("Warming Up Application. Will take {0} seconds to finish.".format(DELAY_FROM_ENV))
-        time.sleep(DELAY_FROM_ENV)
+        time.sleep(int(DELAY_FROM_ENV))
 
     print("Application Ready!")
     # Run Flask Application
