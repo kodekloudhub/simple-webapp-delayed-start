@@ -3,15 +3,12 @@ from flask import render_template, request
 import socket
 import os
 import time
-import sys
-from threading import Lock
-import threading
-sem = threading.Semaphore()
+
 app = Flask(__name__)
 
 # Get start delay from Environment variable
 DELAY_FROM_ENV = os.environ.get('APP_START_DELAY') or 0
-lock = Lock()
+FROZEN = False
 
 
 def shutdown_server():
@@ -23,23 +20,27 @@ def shutdown_server():
 
 @app.route("/")
 def main():
-    # return 'Hello'
-    return render_template('hello.html', name=socket.gethostname(), color='#16a085')
+    if not FROZEN:
+        # return 'Hello'
+        return render_template('hello.html', name=socket.gethostname(), color='#16a085')
 
 
 @app.route("/hostname")
 def hostname():
-    return socket.gethostname()
+    if not FROZEN:
+        return socket.gethostname()
 
 
 @app.route("/ready")
 def ready():
-    return "Message from {0} : I am ready!".format(socket.gethostname())
+    if not FROZEN:
+        return "Message from {0} : I am ready!".format(socket.gethostname())
 
 
 @app.route("/live")
 def live():
-    return "Message from {0} : I am live!".format(socket.gethostname())
+    if not FROZEN:
+        return "Message from {0} : I am live!".format(socket.gethostname())
 
 
 @app.route("/crash")
@@ -51,7 +52,8 @@ def crash():
 
 @app.route("/freeze")
 def freeze():
-    sem.acquire()
+    global FROZEN
+    FROZEN = True
     while True:
         print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
         time.sleep(2)
