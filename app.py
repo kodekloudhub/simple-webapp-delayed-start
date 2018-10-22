@@ -4,11 +4,14 @@ import socket
 import os
 import time
 import sys
+from threading import Lock
 
 app = Flask(__name__)
 
 # Get start delay from Environment variable
 DELAY_FROM_ENV = os.environ.get('APP_START_DELAY') or 0
+lock = Lock()
+
 
 def shutdown_server():
     func = request.environ.get('werkzeug.server.shutdown')
@@ -47,8 +50,10 @@ def crash():
 
 @app.route("/freeze")
 def freeze():
-    while True:
-        print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
+    with lock:
+        while True:
+            print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
+            time.sleep(2)
 
 
 if __name__ == "__main__":
