@@ -1,9 +1,9 @@
 from flask import Flask
 from flask import render_template
 import socket
-import random
+import json
 import os
-import argparse
+import requests
 import time
 
 app = Flask(__name__)
@@ -20,6 +20,24 @@ def main():
 @app.route("/hostname")
 def hostname():
     return socket.gethostname()
+
+
+@app.route("/ready")
+def ready():
+    return "Message from {0} : I am ready!".format(socket.gethostname())
+
+
+@app.route("/live")
+def live():
+    return "Message from {0} : I am live!".format(socket.gethostname())
+
+
+@app.route("/freeze")
+def fail():
+    while True:
+        print("Message from {0} : I am stuck!".format(socket.gethostname()))
+        time.sleep(1)
+
 
 if __name__ == "__main__":
 
