@@ -3,6 +3,7 @@ from flask import render_template
 import socket
 import os
 import time
+import sys
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def live():
 @app.route("/crash")
 def crash():
     print("Message from {0} : Mayday! Mayday! Going to crash!".format(socket.gethostname()))
-    exit(1)
+    sys.exit(1)
 
 
 @app.route("/freeze")
