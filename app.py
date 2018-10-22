@@ -46,10 +46,9 @@ def crash():
 
 
 @app.route("/freeze")
-def fail():
+def freeze():
     while True:
         print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
-        time.sleep(1)
 
 
 if __name__ == "__main__":
