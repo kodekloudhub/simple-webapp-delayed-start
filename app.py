@@ -32,10 +32,16 @@ def live():
     return "Message from {0} : I am live!".format(socket.gethostname())
 
 
+@app.route("/crash")
+def crash():
+    print("Message from {0} : Mayday! Mayday! Going to crash!".format(socket.gethostname()))
+    exit(1)
+
+
 @app.route("/freeze")
 def fail():
     while True:
-        print("Message from {0} : I am stuck!".format(socket.gethostname()))
+        print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
         time.sleep(1)
 
 
