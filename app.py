@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, request
 import socket
 import os
 import time
@@ -9,6 +9,13 @@ app = Flask(__name__)
 
 # Get start delay from Environment variable
 DELAY_FROM_ENV = os.environ.get('APP_START_DELAY') or 0
+
+def shutdown_server():
+    func = request.environ.get('werkzeug.server.shutdown')
+    if func is None:
+        raise RuntimeError('Not running with the Werkzeug Server')
+    func()
+
 
 @app.route("/")
 def main():
@@ -33,8 +40,9 @@ def live():
 
 @app.route("/crash")
 def crash():
+    shutdown_server()
     print("Message from {0} : Mayday! Mayday! Going to crash!".format(socket.gethostname()))
-    sys.exit(1)
+    return "Message from {0} : Mayday! Mayday! Going to crash!".format(socket.gethostname())
 
 
 @app.route("/freeze")
