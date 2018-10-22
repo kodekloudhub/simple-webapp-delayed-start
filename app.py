@@ -5,7 +5,8 @@ import os
 import time
 import sys
 from threading import Lock
-
+import threading
+sem = threading.Semaphore()
 app = Flask(__name__)
 
 # Get start delay from Environment variable
@@ -50,10 +51,10 @@ def crash():
 
 @app.route("/freeze")
 def freeze():
-    with lock:
-        while True:
-            print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
-            time.sleep(2)
+    sem.acquire()
+    while True:
+        print("Message from {0} : Bad Code! I am stuck!".format(socket.gethostname()))
+        time.sleep(2)
 
 
 if __name__ == "__main__":
