@@ -1,9 +1,7 @@
 from flask import Flask
 from flask import render_template
 import socket
-import json
 import os
-import requests
 import time
 
 app = Flask(__name__)
